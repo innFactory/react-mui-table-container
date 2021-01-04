@@ -56,8 +56,8 @@ export function TableActionBar(props: Props) {
             actions.map((a, i) => (
               <Button
                 key={a.key}
-                variant={a.variant ?? i === 0 ? 'contained' : 'outlined'}
-                color={a.color ?? i === 0 ? 'secondary' : 'primary'}
+                variant={a.variant ?? (i === 0 ? 'contained' : 'outlined')}
+                color={a.color ?? (i === 0 ? 'secondary' : 'primary')}
                 className={classes.button}
                 onClick={onActionButtonClick(a)}
                 disabled={loading}
