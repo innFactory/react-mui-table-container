@@ -24,7 +24,7 @@ const initialData: MyDataType[] = [
   },
 ];
 
-const Template: Story<{}> = args => {
+const Template: Story<{}> = (args) => {
   const [data, setData] = React.useState(initialData);
 
   const addAction: TableAction = {
@@ -42,19 +42,20 @@ const Template: Story<{}> = args => {
     label: 'löschen',
     place: 'row',
     icon: <DeleteIcon />,
-    onClick: d => setData(data.filter(d1 => d.lastName !== d1.lastName)),
+    onClick: (d) => setData(data.filter((d1) => d.lastName !== d1.lastName)),
   };
 
   return (
     <TableContainer<MyDataType>
+      {...args}
       data={data}
       columns={[
         { name: 'firstName', header: 'Vorname' },
         { name: 'lastName', header: 'Nachname' },
         { name: 'rolesAsString', header: 'Rollen' },
       ]}
-      mapTableData={data =>
-        data.map(h => ({
+      mapTableData={(data) =>
+        data.map((h) => ({
           ...h,
           rolesAsString: h.roles.join(', '),
         }))

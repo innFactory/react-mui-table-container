@@ -1,16 +1,17 @@
 // prettier-ignore
-import { Box, IconButton, LinearProgress, makeStyles, Theme, Tooltip } from '@material-ui/core';
+import { Box, Divider, IconButton, LinearProgress, makeStyles, Theme, Tooltip } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 import Fuse from 'fuse.js';
 import MuiVirtualizedTable from 'mui-virtualized-table';
 import * as React from 'react';
 import { AutoSizer } from 'react-virtualized';
+import { Column } from '.';
 import { TableAction } from './TableAction';
 import { TableActionBar } from './TableActionBar';
 
 interface Props<T> {
   data: T[];
-  columns: any[];
+  columns: Column[];
   mapTableData: (data: T[]) => (T & any)[];
   searchKeys: string[];
   actions?: TableAction[];
@@ -19,6 +20,8 @@ interface Props<T> {
   disableHover?: boolean;
   infoText?: string;
   loading?: boolean;
+  noHeaders?: boolean;
+  dense?: boolean;
 }
 
 export function TableContainer<T>(props: Props<T>) {
@@ -31,6 +34,8 @@ export function TableContainer<T>(props: Props<T>) {
     selectedData,
     infoText,
     loading,
+    noHeaders,
+    dense,
   } = props;
   const classes = useStyles();
 
@@ -44,15 +49,16 @@ export function TableContainer<T>(props: Props<T>) {
 
   React.useEffect(() => {
     if (actions) {
-      const rowActions = actions.filter(a => a.place === 'row');
+      const rowActions = actions.filter((a) => a.place === 'row');
 
       const actionColumn = {
         cell: (rowData: any) => (
           <>
-            {rowActions.map(a => (
+            {rowActions.map((a) => (
               <Tooltip title={a.label ?? ''} key={a.key}>
                 <IconButton
                   onClick={() => a.onClick && a.onClick(rowData, a.key)}
+                  size={dense ? 'small' : 'medium'}
                 >
                   {a.icon ?? <CreateIcon />}
                 </IconButton>
@@ -67,7 +73,7 @@ export function TableContainer<T>(props: Props<T>) {
 
       setColumns([...props.columns, actionColumn]);
     } else {
-      setColumns(props.columns);
+      setColumns(columns);
     }
   }, [actions]);
 
@@ -114,26 +120,29 @@ export function TableContainer<T>(props: Props<T>) {
             }}
           >
             {loading && (
-              <Box height={0} marginBottom={1}>
+              <Box height={0} marginBottom={dense ? 0.2 : 1}>
                 <LinearProgress />
               </Box>
             )}
-            {!loading && <Box height={4} marginTop={1} />}
+            {!loading && <Box height={4} marginTop={dense ? 0.2 : 1} />}
 
             <TableActionBar
               searchString={searchString}
               onSearch={onSearch}
-              actions={actions?.filter(a => !a.place || a.place === 'top')}
+              actions={actions?.filter((a) => !a.place || a.place === 'top')}
               infoText={infoText}
               loading={loading}
+              dense={dense}
             />
+            {noHeaders && <Divider />}
             <MuiVirtualizedTable
               data={tData}
               columns={columns}
               width={width}
-              includeHeaders={true}
-              resizable={true}
-              fixedRowCount={1}
+              includeHeaders={!noHeaders}
+              resizable={!noHeaders}
+              fixedRowCount={noHeaders ? 0 : 1}
+              rowHeight={dense ? 34 : 48}
               isCellHovered={(
                 column,
                 rowData,
@@ -154,15 +163,15 @@ export function TableContainer<T>(props: Props<T>) {
                 }
                 return false;
               }}
-              columnWidth={c => {
+              columnWidth={(c) => {
                 if (c.columns[c.index].width) {
                   return Number(c.columns[c.index].width);
                 } else {
                   const colWithoutWidthCount = c.columns.filter(
-                    c => c.width === undefined
+                    (c) => c.width === undefined
                   ).length;
                   const widthFromAllColsWithWidth = c.columns
-                    .map(c => c.width)
+                    .map((c) => c.width)
                     .reduce(
                       (w1, w2) => (w1 ? Number(w1) : 0) + (w2 ? Number(w2) : 0)
                     );

@@ -6,21 +6,24 @@ import { TableAction } from './TableAction';
 
 interface Props {
   searchString: string;
-  onSearch: (searchString: string) => void;
+  onSearch?: (searchString: string) => void;
   actions?: TableAction[];
   infoText?: string;
   loading?: boolean;
+  dense?: boolean;
 }
 
 export function TableActionBar(props: Props) {
-  const { searchString, onSearch, actions, infoText, loading } = props;
-  const classes = useStyles();
+  const { searchString, onSearch, actions, infoText, loading, dense } = props;
+  const classes = useStyles(props);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value) {
-      onSearch(event.target.value);
-    } else {
-      onSearch('');
+    if (onSearch) {
+      if (event.target.value) {
+        onSearch(event.target.value);
+      } else {
+        onSearch('');
+      }
     }
   };
 
@@ -30,10 +33,10 @@ export function TableActionBar(props: Props) {
 
   return (
     <Box
-      height={55}
-      marginLeft={1}
-      marginRight={1}
-      marginBottom={1}
+      height={dense ? 45 : 55}
+      marginLeft={dense ? 0.2 : 1}
+      marginRight={dense ? 0.2 : 1}
+      marginBottom={dense ? 0.2 : 1}
       display="flex"
       alignItems="center"
       justifyContent="space-between"
@@ -42,15 +45,18 @@ export function TableActionBar(props: Props) {
         <InfoHelp text={infoText} />
       </Box>
       <div className={classes.container}>
-        <TextField
-          variant="outlined"
-          label="Suchen"
-          className={classes.textField}
-          classes={{ root: classes.textFieldRoot }}
-          value={searchString}
-          onChange={handleSearchChange}
-          disabled={loading}
-        />
+        {onSearch && (
+          <TextField
+            variant="outlined"
+            label="Suchen"
+            className={classes.textField}
+            classes={{ root: classes.textFieldRoot }}
+            value={searchString}
+            onChange={handleSearchChange}
+            disabled={loading}
+            size={dense ? 'small' : 'medium'}
+          />
+        )}
         <Box display="flex" flexDirection="row-reverse">
           {actions &&
             actions.map((a, i) => (
@@ -61,6 +67,7 @@ export function TableActionBar(props: Props) {
                 className={classes.button}
                 onClick={onActionButtonClick(a)}
                 disabled={loading}
+                size={dense ? 'small' : 'medium'}
               >
                 {a.label}
               </Button>
@@ -72,21 +79,21 @@ export function TableActionBar(props: Props) {
 }
 
 const useStyles = makeStyles({
-  button: {
-    height: 50,
-    marginLeft: 10,
-  },
+  button: (props: Props) => ({
+    height: props.dense ? 40 : 50,
+    marginLeft: props.dense ? 1 : 10,
+  }),
 
-  container: {
+  container: (props: Props) => ({
     justifyContent: 'flex-end',
     display: 'flex',
-    height: 55,
-  },
+    height: props.dense ? 45 : 55,
+  }),
 
-  textField: {
-    height: '50px',
+  textField: (props: Props) => ({
+    height: props.dense ? 40 : 50,
     width: '200px',
-  },
+  }),
 
   textFieldRoot: {
     flexDirection: 'unset',
