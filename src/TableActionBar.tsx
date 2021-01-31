@@ -33,7 +33,7 @@ export function TableActionBar(props: Props) {
 
   return (
     <Box
-      height={dense ? 45 : 55}
+      height={dense ? 37 : 55}
       marginLeft={dense ? 0.2 : 1}
       marginRight={dense ? 0.2 : 1}
       marginBottom={dense ? 0.2 : 1}
@@ -80,18 +80,18 @@ export function TableActionBar(props: Props) {
 
 const useStyles = makeStyles({
   button: (props: Props) => ({
-    height: props.dense ? 40 : 50,
+    height: props.dense ? 32 : 50,
     marginLeft: props.dense ? 1 : 10,
   }),
 
   container: (props: Props) => ({
     justifyContent: 'flex-end',
     display: 'flex',
-    height: props.dense ? 45 : 55,
+    height: props.dense ? 37 : 55,
   }),
 
   textField: (props: Props) => ({
-    height: props.dense ? 40 : 50,
+    height: props.dense ? 32 : 50,
     width: '200px',
   }),
 
