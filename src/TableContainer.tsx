@@ -115,6 +115,7 @@ export function TableContainer<T>(props: Props<T>) {
         {({ height, width }) => (
           <div
             style={{
+              height: height,
               width: width,
               overflowX: 'auto',
               display: 'flex',
@@ -194,7 +195,7 @@ export function TableContainer<T>(props: Props<T>) {
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    height: '100%',
+    height: '100hv',
     width: '100%',
   },
 }));
