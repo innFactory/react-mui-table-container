@@ -194,7 +194,7 @@ export function TableContainer<T>(props: Props<T>) {
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    height: '100hv',
+    height: '100vh',
     width: '100%',
   },
 }));
