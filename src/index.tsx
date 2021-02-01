@@ -1,8 +1,39 @@
+import {
+  ICellPropsProducer,
+  IMuiVirtualizedTableColumn,
+} from 'mui-virtualized-table';
+
 export * from './InfoHelp';
 export * from './TableAction';
 export * from './TableContainer';
 
-export interface Column {
-  name: string;
-  header: string;
+export interface Column<T> {
+  /**
+   * Callback for rendering associated column cell data. Passes the row data for the associated cell.
+   */
+  cell?: (rowData: T) => React.ReactNode;
+
+  /**
+   * Name to display instead of `name`
+   */
+  header?: React.ReactNode;
+
+  /**
+   * Name of header
+   */
+  name?: string;
+
+  /**
+   * Callback when header is clicked on (has precedence over `onHeaderClick` on table)
+   */
+  onHeaderClick?: (column: Column<T>) => void;
+
+  /**
+   * Width of cell.
+   *
+   * Can be a `number`, straight pixel width, or percentage string like `40%`
+   */
+  width?: number | string;
+
+  cellProps?: ICellPropsProducer<T>;
 }
