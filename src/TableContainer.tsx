@@ -115,7 +115,6 @@ export function TableContainer<T>(props: Props<T>) {
         {({ height, width }) => (
           <div
             style={{
-              height: height,
               width: width,
               overflowX: 'auto',
               display: 'flex',
