@@ -2,7 +2,9 @@
 import { Box, Divider, IconButton, LinearProgress, makeStyles, Theme, Tooltip } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 import Fuse from 'fuse.js';
-import MuiVirtualizedTable from 'mui-virtualized-table';
+import MuiVirtualizedTable, {
+  IMuiVirtualizedTableColumn,
+} from 'mui-virtualized-table';
 import * as React from 'react';
 import { AutoSizer } from 'react-virtualized';
 import { Column } from '.';
@@ -11,7 +13,7 @@ import { TableActionBar } from './TableActionBar';
 
 interface Props<T> {
   data: T[];
-  columns: Column[];
+  columns: Column<T>[];
   mapTableData: (data: T[]) => (T & any)[];
   searchKeys: string[];
   actions?: TableAction[];
@@ -41,7 +43,7 @@ export function TableContainer<T>(props: Props<T>) {
 
   const [searchString, setSearchString] = React.useState('');
   const [tData, setTableData] = React.useState<any[]>(mapTableData(data));
-  const [columns, setColumns] = React.useState<any[]>(props.columns);
+  const [columns, setColumns] = React.useState<Column<T>[]>(props.columns);
 
   React.useEffect(() => {
     setTableData(mapTableData(data));
@@ -51,8 +53,8 @@ export function TableContainer<T>(props: Props<T>) {
     if (actions) {
       const rowActions = actions.filter((a) => a.place === 'row');
 
-      const actionColumn = {
-        cell: (rowData: any) => (
+      const actionColumn: Column<T> = {
+        cell: (rowData) => (
           <>
             {rowActions.map((a) => (
               <Tooltip title={a.label ?? ''} key={a.key}>
@@ -137,7 +139,7 @@ export function TableContainer<T>(props: Props<T>) {
             {noHeaders && <Divider />}
             <MuiVirtualizedTable
               data={tData}
-              columns={columns}
+              columns={columns as any}
               width={width}
               includeHeaders={!noHeaders}
               resizable={!noHeaders}
@@ -192,7 +194,7 @@ export function TableContainer<T>(props: Props<T>) {
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    height: '100vh',
+    height: '100%',
     width: '100%',
   },
 }));
