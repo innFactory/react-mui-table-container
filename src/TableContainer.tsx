@@ -24,6 +24,7 @@ interface Props<T> {
   loading?: boolean;
   noHeaders?: boolean;
   dense?: boolean;
+  isCellSelected?: (column: Column<T>, rowData: T) => boolean;
 }
 
 export function TableContainer<T>(props: Props<T>) {
@@ -38,6 +39,7 @@ export function TableContainer<T>(props: Props<T>) {
     loading,
     noHeaders,
     dense,
+    isCellSelected,
   } = props;
   const classes = useStyles();
 
@@ -159,12 +161,16 @@ export function TableContainer<T>(props: Props<T>) {
               onCellClick={
                 onClick ? (event, tableData) => onClick(tableData) : undefined
               }
-              isCellSelected={(column, rowData) => {
-                if (selectedData) {
-                  return selectedData.id === rowData.id;
-                }
-                return false;
-              }}
+              isCellSelected={
+                (isCellSelected as any)
+                  ? (column, rowData) => {
+                      if (selectedData) {
+                        return selectedData.id === rowData.id;
+                      }
+                      return false;
+                    }
+                  : undefined
+              }
               columnWidth={(c) => {
                 if (c.columns[c.index].width) {
                   return Number(c.columns[c.index].width);
