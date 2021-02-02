@@ -162,14 +162,14 @@ export function TableContainer<T>(props: Props<T>) {
                 onClick ? (event, tableData) => onClick(tableData) : undefined
               }
               isCellSelected={
-                (isCellSelected as any)
-                  ? (column, rowData) => {
+                isCellSelected
+                  ? (isCellSelected as any)
+                  : (column, rowData) => {
                       if (selectedData) {
                         return selectedData.id === rowData.id;
                       }
                       return false;
                     }
-                  : undefined
               }
               columnWidth={(c) => {
                 if (c.columns[c.index].width) {
