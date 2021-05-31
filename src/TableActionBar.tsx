@@ -31,6 +31,10 @@ export function TableActionBar(props: Props) {
     action.onClick && action.onClick(undefined, action.key);
   };
 
+  if ((!actions || actions.length < 1) && !onSearch && !infoText) {
+    return <></>;
+  }
+
   return (
     <Box
       height={dense ? 37 : 55}

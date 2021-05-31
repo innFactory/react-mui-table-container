@@ -2,9 +2,7 @@
 import { Box, Divider, IconButton, LinearProgress, makeStyles, Theme, Tooltip } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 import Fuse from 'fuse.js';
-import MuiVirtualizedTable, {
-  IMuiVirtualizedTableColumn,
-} from 'mui-virtualized-table';
+import MuiVirtualizedTable from 'mui-virtualized-table';
 import * as React from 'react';
 import { AutoSizer } from 'react-virtualized';
 import { Column } from '.';
@@ -12,10 +10,10 @@ import { TableAction } from './TableAction';
 import { TableActionBar } from './TableActionBar';
 
 interface Props<T> {
-  data: T[];
+  data?: T[];
   columns: Column<T>[];
   mapTableData: (data: T[]) => (T & any)[];
-  searchKeys: string[];
+  searchKeys?: string[];
   actions?: TableAction[];
   onClick?: (data: T) => void;
   selectedData?: any;
@@ -25,6 +23,7 @@ interface Props<T> {
   noHeaders?: boolean;
   dense?: boolean;
   isCellSelected?: (column: Column<T>, rowData: T) => boolean;
+  noSearch?: boolean;
 }
 
 export function TableContainer<T>(props: Props<T>) {
@@ -40,15 +39,16 @@ export function TableContainer<T>(props: Props<T>) {
     noHeaders,
     dense,
     isCellSelected,
+    noSearch,
   } = props;
   const classes = useStyles();
 
   const [searchString, setSearchString] = React.useState('');
-  const [tData, setTableData] = React.useState<any[]>(mapTableData(data));
+  const [tData, setTableData] = React.useState<any[]>(mapTableData(data ?? []));
   const [columns, setColumns] = React.useState<Column<T>[]>(props.columns);
 
   React.useEffect(() => {
-    setTableData(mapTableData(data));
+    setTableData(mapTableData(data ?? []));
   }, [data]);
 
   React.useEffect(() => {
@@ -106,7 +106,7 @@ export function TableContainer<T>(props: Props<T>) {
     if (searchString) {
       setTableData(newTableData);
     } else {
-      const tData: any[] = mapTableData(data);
+      const tData: any[] = mapTableData(data ?? []);
       setTableData(tData);
     }
   };
@@ -132,7 +132,7 @@ export function TableContainer<T>(props: Props<T>) {
 
             <TableActionBar
               searchString={searchString}
-              onSearch={onSearch}
+              onSearch={noSearch ? undefined : onSearch}
               actions={actions?.filter((a) => !a.place || a.place === 'top')}
               infoText={infoText}
               loading={loading}
