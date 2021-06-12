@@ -24,6 +24,9 @@ interface Props<T> {
   dense?: boolean;
   isCellSelected?: (column: Column<T>, rowData: T) => boolean;
   noSearch?: boolean;
+  searchPlaceholder?: string;
+  searchLeft?: boolean;
+  searchAutofocus?: boolean;
 }
 
 export function TableContainer<T>(props: Props<T>) {
@@ -40,6 +43,9 @@ export function TableContainer<T>(props: Props<T>) {
     dense,
     isCellSelected,
     noSearch,
+    searchPlaceholder,
+    searchLeft,
+    searchAutofocus,
   } = props;
   const classes = useStyles();
 
@@ -137,6 +143,9 @@ export function TableContainer<T>(props: Props<T>) {
               infoText={infoText}
               loading={loading}
               dense={dense}
+              searchPlaceholder={searchPlaceholder}
+              searchLeft={searchLeft}
+              searchAutofocus={searchAutofocus}
             />
             {noHeaders && <Divider />}
             <MuiVirtualizedTable
@@ -144,7 +153,7 @@ export function TableContainer<T>(props: Props<T>) {
               columns={columns as any}
               width={width}
               includeHeaders={!noHeaders}
-              resizable={!noHeaders}
+              resizable={false}
               fixedRowCount={noHeaders ? 0 : 1}
               rowHeight={dense ? 34 : 48}
               isCellHovered={(
