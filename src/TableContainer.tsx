@@ -2,10 +2,10 @@
 import { Box, Divider, IconButton, LinearProgress, makeStyles, Theme, Tooltip } from '@material-ui/core';
 import CreateIcon from '@material-ui/icons/Create';
 import Fuse from 'fuse.js';
-import MuiVirtualizedTable from 'mui-virtualized-table';
 import * as React from 'react';
 import { AutoSizer } from 'react-virtualized';
 import { Column } from '.';
+import MuiVirtualizedTable from './mui-virtualized-table';
 import { TableAction } from './TableAction';
 import { TableActionBar } from './TableActionBar';
 
