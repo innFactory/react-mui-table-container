@@ -27,6 +27,20 @@ interface Props<T> {
   searchPlaceholder?: string;
   searchLeft?: boolean;
   searchAutofocus?: boolean;
+  classes?: {
+    DragHandleActive?: string;
+    DragHandleIcon?: string;
+    cell?: string;
+    cellContents?: string;
+    cellHeader?: string;
+    cellHovered?: string;
+    cellInLastColumn?: string;
+    cellInLastRow?: string;
+    cellSelected?: string;
+    dragHandle?: string;
+    footer?: string;
+    table?: string;
+  };
 }
 
 export function TableContainer<T>(props: Props<T>) {
@@ -46,6 +60,7 @@ export function TableContainer<T>(props: Props<T>) {
     searchPlaceholder,
     searchLeft,
     searchAutofocus,
+    classes: _classes,
   } = props;
   const classes = useStyles();
 
@@ -199,6 +214,7 @@ export function TableContainer<T>(props: Props<T>) {
                   );
                 }
               }}
+              classes={_classes}
             />
           </div>
         )}

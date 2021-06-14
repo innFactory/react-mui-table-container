@@ -1,7 +1,4 @@
-import {
-  ICellPropsProducer,
-  IMuiVirtualizedTableColumn,
-} from 'mui-virtualized-table';
+import { ICellPropsProducer } from 'mui-virtualized-table';
 
 export * from './InfoHelp';
 export * from './TableAction';
@@ -36,4 +33,19 @@ export interface Column<T> {
   width?: number | string;
 
   cellProps?: ICellPropsProducer<T>;
+
+  classes?: {
+    DragHandleActive?: string;
+    DragHandleIcon?: string;
+    cell?: string;
+    cellContents?: string;
+    cellHeader?: string;
+    cellHovered?: string;
+    cellInLastColumn?: string;
+    cellInLastRow?: string;
+    cellSelected?: string;
+    dragHandle?: string;
+    footer?: string;
+    table?: string;
+  };
 }
