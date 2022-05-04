@@ -116,6 +116,7 @@ export function TableContainer<T>(props: Props<T>) {
       threshold: 0.3,
       ignoreLocation: true,
       keys: searchKeys,
+      fieldNormWeight: 1,
     };
 
     const fuse = new Fuse(tData, searchOptions);
